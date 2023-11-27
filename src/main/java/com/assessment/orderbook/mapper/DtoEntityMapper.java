@@ -16,8 +16,10 @@ public abstract class DtoEntityMapper {
     InstrumentRepository instrumentRepository;
 
     @Mapping(target="instrument", expression = "java(instrumentRepository.getById(orderDto.instrumentId()).get())")
+    @Mapping(target = "id", ignore = true)
     public abstract Order orderDtoToOrder(OrderDto orderDto);
 
     @Mapping(target="instrument", expression = "java(instrumentRepository.getById(executionDto.instrumentId()).get())")
+    @Mapping(target = "id", ignore = true)
     public abstract Execution executionDtoToExecution(ExecutionDto executionDto);
 }

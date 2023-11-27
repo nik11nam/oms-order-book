@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 public class ApiMethodResponse<T> {
     private String message;
 
+    private T body;
+
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime timestamp;
@@ -21,5 +23,10 @@ public class ApiMethodResponse<T> {
     public ApiMethodResponse(String message) {
         this.timestamp = LocalDateTime.now();
         this.message = message;
+    }
+
+    public ApiMethodResponse(String message, T body) {
+        this(message);
+        this.body = body;
     }
 }
