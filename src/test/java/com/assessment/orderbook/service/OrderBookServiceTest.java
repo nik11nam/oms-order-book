@@ -12,6 +12,7 @@ import com.assessment.orderbook.repository.OrderBookRepository;
 import com.assessment.orderbook.repository.OrderRepository;
 import com.assessment.orderbook.service.impl.OrderBookServiceImpl;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +22,7 @@ import java.util.Optional;
 import static com.assessment.orderbook.MockTestUtils.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 public class OrderBookServiceTest {
@@ -42,6 +43,14 @@ public class OrderBookServiceTest {
         when(orderBookRepository.findByInstrumentId(instrumentId)).thenReturn(Optional.of(mockOrderBook(instrument)));
 
         OrderBook orderBook = orderBookService.getOrderBook(instrumentId);
+
+        // Mockito - verify method to capture method args for checks
+        verify(orderBookRepository, times((1))).findByInstrumentId(instrumentId);
+        ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(orderBookRepository).findByInstrumentId(argumentCaptor.capture());
+        Long capturedValue = argumentCaptor.getValue();
+        assertThat(capturedValue).isEqualTo(instrumentId);
+
         assertThat(orderBook).isNotNull();
         assertThat(orderBook.getInstrument()).isEqualTo(instrument);
         assertThat(orderBook.getStatus()).isEqualTo(OrderBookStatus.OPEN);
@@ -111,6 +120,10 @@ public class OrderBookServiceTest {
         when(orderBookRepository.findByInstrumentId(instrumentId)).thenReturn(Optional.of(mockOrderBook(instrument)));
 
         order = orderBookService.addOrderToBook(order);
+
+        verify(orderRepository, times((1))).save(order);
+        verify(orderBookRepository, times((1))).findByInstrumentId(instrumentId);
+
         assertThat(order.getId()).isEqualTo(orderId);
         assertThat(order.getInstrument()).isEqualTo(instrument);
         assertThat(order.getOrderType()).isEqualTo(OrderType.MARKET);
@@ -128,6 +141,10 @@ public class OrderBookServiceTest {
         when(orderBookRepository.findByInstrumentId(instrumentId)).thenReturn(Optional.of(mockOrderBook(instrument)));
 
         execution = orderBookService.addExecutionToBook(execution);
+
+        verify(executionRepository, times((1))).save(execution);
+        verify(orderBookRepository, times((1))).findByInstrumentId(instrumentId);
+
         assertThat(execution.getId()).isEqualTo(executionId);
         assertThat(execution.getInstrument()).isEqualTo(instrument);
         assertThat(execution.getQuantity()).isNotNull();
