@@ -19,6 +19,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -52,12 +54,12 @@ public class OrderBookController {
 
         String message = String.format("Order book is %s for instrument id: %d", (OrderBookStatus.OPEN == status ? "opened" : "closed"), id);
         log.info(message);
-        return buildResponseEntity(message);
+        return buildResponseEntity(message, HttpStatus.OK);
     }
 
     @Operation(summary = "Add order to the order book")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Order added to the order book",
+            @ApiResponse(responseCode = "201", description = "Order added to the order book",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ApiMethodResponse.class)) }),
             @ApiResponse(responseCode = "400", description = "Request validation errors",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class)) }),
@@ -72,12 +74,12 @@ public class OrderBookController {
         String message = String.format("Order successfully added to order book for instrument id: %d",
                 orderDto.instrumentId());
         log.info(message);
-        return buildResponseEntity(message);
+        return buildResponseEntity(message, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Add execution to the order book")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Execution added to the order book",
+            @ApiResponse(responseCode = "201", description = "Execution added to the order book",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ApiMethodResponse.class)) }),
             @ApiResponse(responseCode = "400", description = "Request validation errors",
                     content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ApiErrorResponse.class)) }),
@@ -92,11 +94,11 @@ public class OrderBookController {
         String message = String.format("Execution successfully added to order book for instrument id: %d",
                 executionDto.instrumentId());
         log.info(message);
-        return buildResponseEntity(message);
+        return buildResponseEntity(message, HttpStatus.CREATED);
     }
 
-    private ResponseEntity<ApiMethodResponse> buildResponseEntity(String message) {
-        return ResponseEntity.ok(new ApiMethodResponse<>(message));
+    private ResponseEntity<ApiMethodResponse> buildResponseEntity(String message, HttpStatusCode status) {
+        return new ResponseEntity<>(new ApiMethodResponse<>(message), status);
     }
 
 }

@@ -105,7 +105,7 @@ public class OrderBookControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message",
                         is("Order successfully added to order book for instrument id: 5")));
@@ -128,7 +128,7 @@ public class OrderBookControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message",
                         is("Order successfully added to order book for instrument id: 5")));
@@ -178,7 +178,7 @@ public class OrderBookControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andDo(print())
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.message",
                         is("Execution successfully added to order book for instrument id: 5")));

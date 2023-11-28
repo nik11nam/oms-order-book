@@ -90,7 +90,7 @@ public class OrderBookApiIntegrationTest {
                 (createURLWithPort() + "/order"), HttpMethod.POST, entity, ApiMethodResponse.class);
 
         ApiMethodResponse apiMethodResponse = response.getBody();
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(apiMethodResponse).isNotNull();
         assertThat(apiMethodResponse.getMessage())
                 .isEqualTo("Order successfully added to order book for instrument id: 5");
@@ -146,7 +146,7 @@ public class OrderBookApiIntegrationTest {
                 (createURLWithPort() + "/execution"), HttpMethod.POST, entity, ApiMethodResponse.class);
 
         ApiMethodResponse apiMethodResponse = response.getBody();
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(apiMethodResponse).isNotNull();
         assertThat(apiMethodResponse.getMessage())
                 .isEqualTo("Execution successfully added to order book for instrument id: 5");
@@ -180,7 +180,7 @@ public class OrderBookApiIntegrationTest {
                 (createURLWithPort() + "/execution"), HttpMethod.POST, entity, ApiMethodResponse.class);
 
         ApiMethodResponse apiMethodResponse = response.getBody();
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(apiMethodResponse).isNotNull();
         assertThat(apiMethodResponse.getMessage())
                 .isEqualTo("Execution successfully added to order book for instrument id: 5");
